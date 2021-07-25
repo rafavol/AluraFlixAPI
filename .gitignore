@@ -1,1 +1,4 @@
 *.json
+aluraFlixAPI.git/refs/heads/master
+*.idx
+*.pack
