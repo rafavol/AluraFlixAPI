@@ -453,3 +453,6 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 AluraFlixAPI/appsettings.json
+AluraFlixAPI/bin/
+AluraFlixAPI/Migrations/
+.vs/
