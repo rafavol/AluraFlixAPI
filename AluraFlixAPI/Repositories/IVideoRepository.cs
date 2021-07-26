@@ -1,12 +1,15 @@
 ﻿using AluraFlixAPI.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AluraFlixAPI.Repositories
 {
     public interface IVideoRepository
     {
-        Video CreateVideo(Video video);
-        Video GetVideo(int id);
-        IList<Video> GetVideos();
+        Task<Video> CreateVideo(Video video);
+        Task<bool> DeleteVideo(int id);
+        Task<Video> GetVideo(int id);
+        Task<IList<Video>> GetVideos();
+        Task<bool> UpdateVideo(int id, Video video);
     }
 }

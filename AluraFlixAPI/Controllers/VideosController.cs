@@ -25,30 +25,46 @@ namespace AluraFlixAPI.Controllers
 
         // GET: Videos/
         [HttpGet]
-        public IEnumerable<Video> Get()
+        public async Task<ActionResult<IEnumerable<Video>>> Get()
         {
 
-            return _videoReposiroty.GetVideos();
+            return Ok(await _videoReposiroty.GetVideos());
         }
 
         // GET: Videos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Video>> Get(int id)
         {
-            var video = _videoReposiroty.GetVideo(id);
+            var video = await _videoReposiroty.GetVideo(id);
             if (video == null)
             {
-                return NotFound();
+                return NotFound("Vídeo não encontrado");
             }
 
-            return video;
+            return Ok(video);
         }
 
         // POST: Videos/
         [HttpPost]
-        public Video Post(Video video)
+        public async Task<ActionResult<Video>> Post(Video video)
         {
-            return _videoReposiroty.CreateVideo(video);
+            return Ok(await _videoReposiroty.CreateVideo(video));
+        }
+
+        // DELETE: Videos/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Video>> Delete(int id)
+        {
+            var result = await _videoReposiroty.DeleteVideo(id);
+            return result ? Ok("Vídeo Removido com sucesso") : NotFound("Vídeo não encontrado");
+        }
+
+        // PUT: Videos/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, Video video)
+        {
+            var result = await _videoReposiroty.UpdateVideo(id, video);
+            return result ? Ok("Vídeo alterado com sucesso") : BadRequest("Problemas para alterar o vídeo");
         }
     }
 }

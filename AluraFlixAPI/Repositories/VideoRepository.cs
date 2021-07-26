@@ -1,6 +1,8 @@
 ﻿using AluraFlixAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AluraFlixAPI.Repositories
 {
@@ -13,21 +15,70 @@ namespace AluraFlixAPI.Repositories
             this.context = context;
         }
 
-        public Video GetVideo(int id)
+        public async Task<Video> GetVideo(int id)
         {
-            return context.Set<Video>().Where(v => v.Id == id).FirstOrDefault();
+            return await context.Video.FindAsync(id);
         }
 
-        public IList<Video> GetVideos()
+        public async Task<IList<Video>> GetVideos()
         {
-            return context.Set<Video>().ToList();
+            return await context.Video.ToListAsync();
         }
 
-        public Video CreateVideo(Video video)
+        public async Task<Video> CreateVideo(Video video)
         {
-            context.Set<Video>().Add(video);
-            context.SaveChanges();
+            context.Video.Add(video);
+            await context.SaveChangesAsync();
             return video;
+        }
+
+        private Video GetVideoById(int id)
+        {
+            return context.Video.Find(id);
+        }
+
+        public async Task<bool> DeleteVideo(int id)
+        {
+            var videoToRemove = GetVideoById(id);
+            if (videoToRemove == null)
+            {
+                return false;
+            }
+            context.Video.Remove(videoToRemove);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateVideo(int id, Video video)
+        {
+            if (id != video.Id)
+            {
+                return false;
+            }
+
+            context.Entry(video).State = EntityState.Modified;
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!VideoExists(id))
+                {
+                    return false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return true;
+        }
+
+        private bool VideoExists(int id)
+        {
+            return context.Video.Any(e => e.Id == id);
         }
     }
 }
