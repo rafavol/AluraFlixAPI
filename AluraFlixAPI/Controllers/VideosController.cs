@@ -2,9 +2,7 @@
 using AluraFlixAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -12,40 +10,41 @@ namespace AluraFlixAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OLDVideosController : ControllerBase
+    public class VideosController : ControllerBase
     {
         private readonly IVideoRepository _videoReposiroty;
 
-        private readonly ILogger<OLDVideosController> _logger;
+        private readonly ILogger<VideosController> _logger;
 
-        public OLDVideosController(ILogger<OLDVideosController> logger,
+        public VideosController(ILogger<VideosController> logger,
             IVideoRepository videoReposiroty)
         {
             _logger = logger;
             _videoReposiroty = videoReposiroty;
         }
 
-        // GET: api/Videos
+        // GET: Videos/
+        [HttpGet]
         public IEnumerable<Video> Get()
         {
 
             return _videoReposiroty.GetVideos();
         }
 
-        // GET: api/Videos/5
+        // GET: Videos/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<Video>> Get(int id)
         {
             var video = _videoReposiroty.GetVideo(id);
             if (video == null)
             {
-                return "{message: \"Não encontrado\"}";
+                return NotFound();
             }
-            var jsonString = JsonSerializer.Serialize(video);
-            return jsonString;
+
+            return video;
         }
 
-        // POST: api/Videos
+        // POST: Videos/
         [HttpPost]
         public Video Post(Video video)
         {

@@ -1,8 +1,6 @@
 ﻿using AluraFlixAPI.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AluraFlixAPI.Repositories
 {
@@ -17,17 +15,17 @@ namespace AluraFlixAPI.Repositories
 
         public Video GetVideo(int id)
         {
-            return context.Video.Where(v => v.Id == id).FirstOrDefault();
+            return context.Set<Video>().Where(v => v.Id == id).FirstOrDefault();
         }
 
         public IList<Video> GetVideos()
         {
-            return context.Video.ToList();
+            return context.Set<Video>().ToList();
         }
 
         public Video CreateVideo(Video video)
         {
-            context.Video.Add(video);
+            context.Set<Video>().Add(video);
             context.SaveChanges();
             return video;
         }
