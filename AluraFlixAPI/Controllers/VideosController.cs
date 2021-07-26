@@ -33,6 +33,7 @@ namespace AluraFlixAPI.Controllers
 
         // GET: Videos/5
         [HttpGet("{id}")]
+        [ProducesResponseType(200)]
         public async Task<ActionResult<Video>> Get(int id)
         {
             var video = await _videoReposiroty.GetVideo(id);
