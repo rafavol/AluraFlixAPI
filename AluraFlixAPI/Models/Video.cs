@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace AluraFlixAPI.Models
 {
     [DataContract]
-    public class Video
+    public class Video : BaseModel
     {
         public Video()
         {
@@ -18,8 +18,7 @@ namespace AluraFlixAPI.Models
             this.Url = url;
         }
 
-        [Required]
-        public int Id { get; set; }
+        public int CategoriaId { get; set; } = 1;
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 2)]

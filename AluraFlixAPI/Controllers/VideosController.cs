@@ -25,8 +25,16 @@ namespace AluraFlixAPI.Controllers
 
         // GET: Videos/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Video>>> Get()
+        public async Task<ActionResult<IEnumerable<Video>>> Get(string search)
         {
+           if(!string.IsNullOrEmpty(search)){
+                var videos = _videoReposiroty.GetVideosWithTitle(search);
+                if (videos.Count == 0)
+                {
+                    return NotFound("Nenhum vídeo encontrado");
+                }
+                return Ok(videos);
+            }
 
             return Ok(await _videoReposiroty.GetVideos());
         }
@@ -65,7 +73,7 @@ namespace AluraFlixAPI.Controllers
         public async Task<IActionResult> Put(int id, Video video)
         {
             var result = await _videoReposiroty.UpdateVideo(id, video);
-            return result ? Ok("Vídeo alterado com sucesso") : BadRequest("Problemas para alterar o vídeo");
+            return result ? Ok(video) : BadRequest("Problemas para alterar o vídeo");
         }
     }
 }

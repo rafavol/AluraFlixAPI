@@ -25,6 +25,11 @@ namespace AluraFlixAPI.Repositories
             return await context.Video.ToListAsync();
         }
 
+        public IList<Video> GetVideosByCategoriaId(int categoriaId)
+        {
+            return context.Video.Where(v => v.CategoriaId == categoriaId).ToList();
+        }
+
         public async Task<Video> CreateVideo(Video video)
         {
             context.Video.Add(video);
@@ -79,6 +84,11 @@ namespace AluraFlixAPI.Repositories
         private bool VideoExists(int id)
         {
             return context.Video.Any(e => e.Id == id);
+        }
+
+        public IList<Video> GetVideosWithTitle(string search)
+        {
+            return context.Video.Where(v => v.Titulo.Contains(search)).ToList();
         }
     }
 }

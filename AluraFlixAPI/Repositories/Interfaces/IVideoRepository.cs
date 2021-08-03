@@ -11,5 +11,7 @@ namespace AluraFlixAPI.Repositories
         Task<Video> GetVideo(int id);
         Task<IList<Video>> GetVideos();
         Task<bool> UpdateVideo(int id, Video video);
+        IList<Video> GetVideosByCategoriaId(int categoriaId);
+        IList<Video> GetVideosWithTitle(string search);
     }
 }
